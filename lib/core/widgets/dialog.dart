@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mezcreen/core/utils.dart';
 
 class MyAlertDialog {
   static Future<void> showAlertDialog({
@@ -10,10 +9,7 @@ class MyAlertDialog {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: child
-          // actions: const <Widget>[],
-        );
+        return AlertDialog(content: SingleChildScrollView(child: child));
       },
     );
   }
