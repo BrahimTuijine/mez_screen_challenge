@@ -1,13 +1,30 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:mezcreen/core/utils/utils.dart';
 
-class MyRoom extends StatelessWidget {
-  const MyRoom({super.key});
+class MyRoom extends HookWidget {
+  final String roomKey;
+  final dynamic roomValue;
+  const MyRoom({super.key, 
+    required this.roomKey,
+    required this.roomValue,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
         elevation: 2,
         backgroundColor: Colors.white,
         centerTitle: true,

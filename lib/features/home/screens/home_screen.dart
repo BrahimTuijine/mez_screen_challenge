@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mezcreen/core/utils/utils.dart';
 import 'package:mezcreen/core/widgets/dialog.dart';
-import 'package:mezcreen/home/bloc/room_list_bloc.dart';
-import 'package:mezcreen/home/widgets/dialog_content.dart';
-import 'package:mezcreen/home/widgets/energy_widget.dart';
-import 'package:mezcreen/home/widgets/room_widget.dart';
+import 'package:mezcreen/features/home/bloc/room_list_bloc.dart';
+import 'package:mezcreen/features/home/widgets/dialog_content.dart';
+import 'package:mezcreen/features/home/widgets/energy_widget.dart';
+import 'package:mezcreen/features/home/widgets/room_widget.dart';
+import 'package:mezcreen/features/room_devices/door_device_updated.dart';
 
 class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
@@ -155,37 +156,47 @@ class HomeScreen extends HookWidget {
                       state.roomsListModel.forEach(
                         (key, value) {
                           rooms.add(
-                            RoomWidget(
-                              deviceNumber: value['devices'].length,
-                              roomName: value['name'],
+                            InkWell(
+                              onTap: () {
+                                MyAlertDialog.showAlertDialog(
+                                  context: context,
+                                  child: HomeDialogContent(
+                                    initValue: value['name'],
+                                    onPressed: () {
+                                      // update firebase data
+                                      // updata room data in the UI without get req to gain performance
+                                      Navigator.pop(context);
+
+                                      // this is a small app , so i didn't use goRouter   
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MyRoom(
+                                            roomKey: key,
+                                            roomValue: value,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: RoomWidget(
+                                deviceNumber: value['devices'].length,
+                                roomName: value['name'],
+                              ),
                             ),
                           );
                         },
                       );
                       return Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: List.generate(
-                              rooms.length, (index) => rooms[index])
-
-                          // const [
-                          // RoomWidget(
-                          //   deviceNumber: 3,
-                          //   image: 'assets/page-1/images/auto-group-iuem.png',
-                          //   roomName: 'Mom’s room',
-                          // ),
-                          //   RoomWidget(
-                          //     deviceNumber: 3,
-                          //     image: 'assets/page-1/images/auto-group-4jnh.png',
-                          //     roomName: 'Living Room',
-                          //   ),
-                          //   RoomWidget(
-                          //     deviceNumber: 2,
-                          //     image: 'assets/page-1/images/auto-group-eugh.png',
-                          //     roomName: 'Kitchen',
-                          //   ),
-                          // ],
-                          );
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: List.generate(
+                          rooms.length,
+                          (index) => rooms[index],
+                        ),
+                      );
                     }
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -199,7 +210,12 @@ class HomeScreen extends HookWidget {
                   onTap: () {
                     MyAlertDialog.showAlertDialog(
                       context: context,
-                      child: HomeDialogContent(),
+                      child: HomeDialogContent(
+                        onPressed: () {
+                          // send new room to firebase
+                          // add new room in the UI without get req to gain performance
+                        },
+                      ),
                     );
                   },
                   child: Container(
