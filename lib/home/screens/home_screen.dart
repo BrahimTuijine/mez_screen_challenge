@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:mezcreen/core/utils.dart';
+import 'package:mezcreen/core/utils/utils.dart';
 import 'package:mezcreen/core/widgets/dialog.dart';
+import 'package:mezcreen/home/bloc/room_list_bloc.dart';
 import 'package:mezcreen/home/widgets/dialog_content.dart';
 import 'package:mezcreen/home/widgets/energy_widget.dart';
 import 'package:mezcreen/home/widgets/room_widget.dart';
@@ -46,148 +48,180 @@ class HomeScreen extends HookWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Today’s weather',
-                style: SafeGoogleFont(
-                  'Inter',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  height: 1.2125,
-                  color: const Color(0xff494949),
+      body: BlocProvider(
+        create: (context) => RoomListBloc()..add(GetRoomListEvent()),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Today’s weather',
+                  style: SafeGoogleFont(
+                    'Inter',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    height: 1.2125,
+                    color: const Color(0xff494949),
+                  ),
                 ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    // cloudysnowingblack24dp1rjF (1:4)
-                    margin: const EdgeInsets.fromLTRB(0, 0, 6.63, 0),
-                    width: 24,
-                    height: 24,
-                    child: Image.asset(
-                      'assets/page-1/images/cloudysnowingblack24dp-1-eUM.png',
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      // cloudysnowingblack24dp1rjF (1:4)
+                      margin: const EdgeInsets.fromLTRB(0, 0, 6.63, 0),
                       width: 24,
                       height: 24,
+                      child: Image.asset(
+                        'assets/page-1/images/cloudysnowingblack24dp-1-eUM.png',
+                        width: 24,
+                        height: 24,
+                      ),
                     ),
-                  ),
-                  Text(
-                    // cWoo (1:11)
-                    '14°C',
-                    style: SafeGoogleFont(
-                      'Inter',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      height: 1.2125,
-                      color: const Color(0xff000000),
+                    Text(
+                      // cWoo (1:11)
+                      '14°C',
+                      style: SafeGoogleFont(
+                        'Inter',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        height: 1.2125,
+                        color: const Color(0xff000000),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Text(
-                'Energy saving',
-                style: SafeGoogleFont(
-                  'Inter',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  height: 1.2125,
-                  color: const Color(0xff000000),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  EnergyWiget(
-                    image: 'assets/page-1/images/group-8.png',
-                    kwh: '93',
-                    time: 'Today',
-                  ),
-                  EnergyWiget(
-                    image: 'assets/page-1/images/auto-group-xqzw.png',
-                    kwh: '970,244',
-                    time: 'This week',
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Text(
-                'Rooms',
-                style: SafeGoogleFont(
-                  'Inter',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  height: 1.2125,
-                  color: const Color(0xff000000),
+                const SizedBox(
+                  height: 22,
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Wrap(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 10,
-                runSpacing: 10,
-                children: const [
-                  RoomWidget(
-                    deviceNumber: 3,
-                    image: 'assets/page-1/images/auto-group-iuem.png',
-                    roomName: 'Mom’s room',
-                  ),
-                  RoomWidget(
-                    deviceNumber: 3,
-                    image: 'assets/page-1/images/auto-group-4jnh.png',
-                    roomName: 'Living Room',
-                  ),
-                  RoomWidget(
-                    deviceNumber: 2,
-                    image: 'assets/page-1/images/auto-group-eugh.png',
-                    roomName: 'Kitchen',
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () {
-                  MyAlertDialog.showAlertDialog(
-                    context: context,
-                    child: HomeDialogContent(),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.fromLTRB(43.79, 43.79, 43.79, 43.79),
-                  width: 111.57,
-                  height: 111.57,
-                  decoration: BoxDecoration(
-                    color: const Color(0xfff5f5f5),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/page-1/images/add-circle-outline-mJ5.png',
-                      width: 24,
-                      height: 24,
-                    ),
+                Text(
+                  'Energy saving',
+                  style: SafeGoogleFont(
+                    'Inter',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2125,
+                    color: const Color(0xff000000),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    EnergyWiget(
+                      image: 'assets/page-1/images/group-8.png',
+                      kwh: '93',
+                      time: 'Today',
+                    ),
+                    EnergyWiget(
+                      image: 'assets/page-1/images/auto-group-xqzw.png',
+                      kwh: '970,244',
+                      time: 'This week',
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 22,
+                ),
+                Text(
+                  'Rooms',
+                  style: SafeGoogleFont(
+                    'Inter',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2125,
+                    color: const Color(0xff000000),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                BlocConsumer<RoomListBloc, RoomListState>(
+                  listener: (context, state) {
+                    if (state is RoomListError) {
+                      MyAlertDialog.showAlertDialog(
+                        context: context,
+                        child: Text(state.error),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is GetRoomListState) {
+                      List<Widget> rooms = [];
+                      state.roomsListModel.forEach(
+                        (key, value) {
+                          rooms.add(
+                            RoomWidget(
+                              deviceNumber: value['devices'].length,
+                              roomName: value['name'],
+                            ),
+                          );
+                        },
+                      );
+                      return Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: List.generate(
+                              rooms.length, (index) => rooms[index])
+
+                          // const [
+                          // RoomWidget(
+                          //   deviceNumber: 3,
+                          //   image: 'assets/page-1/images/auto-group-iuem.png',
+                          //   roomName: 'Mom’s room',
+                          // ),
+                          //   RoomWidget(
+                          //     deviceNumber: 3,
+                          //     image: 'assets/page-1/images/auto-group-4jnh.png',
+                          //     roomName: 'Living Room',
+                          //   ),
+                          //   RoomWidget(
+                          //     deviceNumber: 2,
+                          //     image: 'assets/page-1/images/auto-group-eugh.png',
+                          //     roomName: 'Kitchen',
+                          //   ),
+                          // ],
+                          );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    MyAlertDialog.showAlertDialog(
+                      context: context,
+                      child: HomeDialogContent(),
+                    );
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.fromLTRB(43.79, 43.79, 43.79, 43.79),
+                    width: 111.57,
+                    height: 111.57,
+                    decoration: BoxDecoration(
+                      color: const Color(0xfff5f5f5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'assets/page-1/images/add-circle-outline-mJ5.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

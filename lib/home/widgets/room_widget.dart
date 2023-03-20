@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mezcreen/core/utils.dart';
+import 'package:mezcreen/core/utils/utils.dart';
 
 class RoomWidget extends StatelessWidget {
-  const RoomWidget({
+  RoomWidget({
     Key? key,
-    required this.image,
     required this.roomName,
     required this.deviceNumber,
   }) : super(key: key);
 
-  final String image;
   final String roomName;
   final int deviceNumber;
+
+  final Map<String, String> roomImage = {
+    'Living Room': 'assets/page-1/images/auto-group-4jnh.png',
+    'Kitchen': 'assets/page-1/images/auto-group-eugh.png'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +39,13 @@ class RoomWidget extends StatelessWidget {
           Container(
             margin: const EdgeInsets.fromLTRB(0, 0, 2.67, 11.11),
             child: Image.asset(
-              image,
+              // beautiful if condition hhhh
+              roomImage[roomName] ?? 'assets/page-1/images/auto-group-iuem.png',
               width: 33.57,
               height: 33.57,
             ),
           ),
           Container(
-            // momsroomWZT (1:49)
             margin: const EdgeInsets.fromLTRB(0, 0, 0, 1.89),
             child: FittedBox(
               child: Text(

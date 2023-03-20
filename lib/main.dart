@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mezcreen/env.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:mezcreen/home/screens/door_device_updated.dart';
 import 'package:mezcreen/home/screens/home_screen.dart';
 import 'package:mezcreen/sample_data.dart';
 
@@ -64,10 +63,12 @@ class _RoomsPageState extends State<RoomsPage> {
               (BuildContext context, AsyncSnapshot<DataSnapshot> snapshot) {
             List<Widget> children = <Widget>[];
             if (snapshot.hasData) {
+              print(snapshot.data!.value);
               Map<dynamic, dynamic> rooms =
                   snapshot.data!.value as Map<dynamic, dynamic>;
               rooms.forEach((key, value) {
-                children.add(TextButton(
+                children.add(
+                  TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -77,7 +78,9 @@ class _RoomsPageState extends State<RoomsPage> {
                         ),
                       );
                     },
-                    child: Text(value['name'])));
+                    child: Text(value['name']),
+                  ),
+                );
               });
             } else if (snapshot.hasError) {
               children = <Widget>[
